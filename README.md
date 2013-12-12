@@ -1,171 +1,60 @@
 Symfony Grunt Edition
-========================
+=====================
 
-Welcome to the Symfony Grunt Edition - a fully-functional Symfony2
-application that you can use as the skeleton for your new applications.
+This is a Symfony Edition that replaces Assetic with a grunt configuration.  I have some taken some
+liberties based on my development style.  When doing frontend development, I don't like waiting for
+some kind of *watch* task.  I like my updates to be instant.  This edition allows for your frontend
+assets to be linked to the source in development and linked to the minified version in production.
 
-This document contains information on how to download, install, and start
-using Symfony. For a more detailed explanation, see the [Installation][1]
-chapter of the Symfony Documentation.
+## Requirements
 
-1) Installing the Grunt Edition
-----------------------------------
+- npm
+- bower (`sudo npm install -g bower`)
+- grunt (`sudo npm install -g grunt-cli`)
 
-When it comes to installing the Symfony Standard Edition, you have the
-following options.
+## Installation
 
-### Use Composer (*recommended*)
+```
+> composer install
+> bower install
+> npm install
+> grunt
+```
 
-As Symfony uses [Composer][2] to manage its dependencies, the recommended way
-to create a new project is to use it.
+## Grunt Tasks
 
-If you don't have Composer yet, download it following the instructions on
-http://getcomposer.org/ or just run the following command:
+- `clean`: removes `web/_static` contents
+- `jshint`: detect errors in your javascipt
+- `uglify`: minify your javascipt
+- `cssmin`: minify your css
+- `modernizr`: install/configure modernizr based on your javascript files\
+- *(default)*: runs all the above
 
-    curl -s http://getcomposer.org/installer | php
+## Configuration
 
-Then, use the `create-project` command to generate a new Symfony application:
+To configure the assets for you project, add them to `app/config/assets.json`.  Both Symfony2 and grunt use
+this configuration.
 
-    php composer.phar create-project symfony/framework-standard-edition path/to/install
+## Summary of changes from the Symfony Standard Edition
 
-Composer will install Symfony and all its dependencies under the
-`path/to/install` directory.
+### New Files
 
-### Download an Archive File
+- `bower.json`: bower package configuration
+- `.bowerrc`: bower configuration to install frontend assets to `web/vendor`
+- `package.json`: npm package configuration (for grunt)
+- `app/config/assets.json`: global asset configuration
+- `app/config/config.php`: sets a Symfony2 parameter based on the above `assets.json` configuration
+- `gruntfile.js`: configures grunt, assets for minification are pulled from the above `assets.json`
+- `web/css/main.css`/`web/js/script.js`: test assets
 
-To quickly test Symfony, you can also download an [archive][3] of the Standard
-Edition and unpack it somewhere under your web server root directory.
+### Modified Files
 
-If you downloaded an archive "without vendors", you also need to install all
-the necessary dependencies. Download composer (see above) and run the
-following command:
+- `app/config/config.yml`: added twig global variable `app_assets` which is set to the parameter set in `config.php`
+- `app/Resources/views/base.html.twig`: modified the `stylesheets` and `javascripts` block to load these assets
+ based on the above `app_assets` configuration (`app.debug=true`: source is used, `app.debug=false`: min is used)
 
-    php composer.phar install
+### Other Changes
 
-2) Checking your System Configuration
--------------------------------------
-
-Before starting coding, make sure that your local system is properly
-configured for Symfony.
-
-Execute the `check.php` script from the command line:
-
-    php app/check.php
-
-The script returns a status code of `0` if all mandatory requirements are met,
-`1` otherwise.
-
-Access the `config.php` script from a browser:
-
-    http://localhost/path/to/symfony/app/web/config.php
-
-If you get any warnings or recommendations, fix them before moving on.
-
-3) Browsing the Demo Application
---------------------------------
-
-Congratulations! You're now ready to use Symfony.
-
-From the `config.php` page, click the "Bypass configuration and go to the
-Welcome page" link to load up your first Symfony page.
-
-You can also use a web-based configurator by clicking on the "Configure your
-Symfony Application online" link of the `config.php` page.
-
-To see a real-live Symfony page in action, access the following page:
-
-    web/app_dev.php/demo/hello/Fabien
-
-4) Getting started with Symfony
--------------------------------
-
-This distribution is meant to be the starting point for your Symfony
-applications, but it also contains some sample code that you can learn from
-and play with.
-
-A great way to start learning Symfony is via the [Quick Tour][4], which will
-take you through all the basic features of Symfony2.
-
-Once you're feeling good, you can move onto reading the official
-[Symfony2 book][5].
-
-A default bundle, `AcmeDemoBundle`, shows you Symfony2 in action. After
-playing with it, you can remove it by following these steps:
-
-  * delete the `src/Acme` directory;
-
-  * remove the routing entry referencing AcmeDemoBundle in `app/config/routing_dev.yml`;
-
-  * remove the AcmeDemoBundle from the registered bundles in `app/AppKernel.php`;
-
-  * remove the `web/bundles/acmedemo` directory;
-
-  * remove the `security.providers`, `security.firewalls.login` and
-    `security.firewalls.secured_area` entries in the `security.yml` file or
-    tweak the security configuration to fit your needs.
-
-What's inside?
----------------
-
-The Symfony Standard Edition is configured with the following defaults:
-
-  * Twig is the only configured template engine;
-
-  * Doctrine ORM/DBAL is configured;
-
-  * Swiftmailer is configured;
-
-  * Annotations for everything are enabled.
-
-It comes pre-configured with the following bundles:
-
-  * **FrameworkBundle** - The core Symfony framework bundle
-
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
-
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
-
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
-
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * [**AsseticBundle**][12] - Adds support for Assetic, an asset processing
-    library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-  * **AcmeDemoBundle** (in dev/test env) - A demo bundle with some example
-    code
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  http://symfony.com/doc/2.4/book/installation.html
-[2]:  http://getcomposer.org/
-[3]:  http://symfony.com/download
-[4]:  http://symfony.com/doc/2.4/quick_tour/the_big_picture.html
-[5]:  http://symfony.com/doc/2.4/index.html
-[6]:  http://symfony.com/doc/2.4/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  http://symfony.com/doc/2.4/book/doctrine.html
-[8]:  http://symfony.com/doc/2.4/book/templating.html
-[9]:  http://symfony.com/doc/2.4/book/security.html
-[10]: http://symfony.com/doc/2.4/cookbook/email.html
-[11]: http://symfony.com/doc/2.4/cookbook/logging/monolog.html
-[12]: http://symfony.com/doc/2.4/cookbook/assetic/asset_management.html
-[13]: http://symfony.com/doc/2.4/bundles/SensioGeneratorBundle/index.html
+- Removed Assetic
+- Simplifed DemoBundle
+- Removed `bootstrap.php.cache` - use composer's `--optimize-autoloader` option
