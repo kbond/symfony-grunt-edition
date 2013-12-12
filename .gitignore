@@ -1,5 +1,6 @@
 /web/bundles/
 /web/vendor/
+/web/_static/
 /node_modules/
 /app/bootstrap.php.cache
 /app/cache/*

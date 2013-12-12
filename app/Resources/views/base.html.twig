@@ -3,11 +3,24 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            {% set css_assets = app.debug ? app_assets.css.dev : [app_assets.css.prod] %}
+
+            {% for asset in css_assets %}
+                <link rel="stylesheet" href="{{ asset(asset) }}" />
+            {% endfor %}
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <script src="{{ asset('_static/js/modernizr.js') }}"></script>
     </head>
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            {% set js_assets = app.debug ? app_assets.js.dev : [app_assets.js.prod] %}
+
+            {% for asset in js_assets %}
+                <script src="{{ asset(asset) }}"></script>
+            {% endfor %}
+        {% endblock %}
     </body>
 </html>

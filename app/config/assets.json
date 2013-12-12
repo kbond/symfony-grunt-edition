@@ -1,0 +1,18 @@
+{
+    "css": {
+        "dev": [
+            "vendor/bootstrap/docs/assets/css/bootstrap.css",
+            "vendor/bootstrap/docs/assets/css/bootstrap-responsive.css",
+            "css/main.css"
+        ],
+        "prod": "_static/css/style.min.css"
+    },
+    "js": {
+        "dev": [
+            "vendor/jquery/jquery.min.js",
+            "vendor/bootstrap/docs/assets/js/bootstrap.js",
+            "js/script.js"
+        ],
+        "prod": "_static/js/script.min.js"
+    }
+}

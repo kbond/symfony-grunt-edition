@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: config.php }
 
 framework:
     #esi:             ~
@@ -28,6 +29,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        app_assets: %app.assets%
 
 # Assetic Configuration
 assetic:
