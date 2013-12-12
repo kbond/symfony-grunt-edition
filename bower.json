@@ -1,0 +1,7 @@
+{
+    "name": "symfony-grunt",
+    "dependencies": {
+        "jquery": "1.10.2",
+        "bootstrap": "2.3.2"
+    }
+}
